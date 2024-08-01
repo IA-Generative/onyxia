@@ -22,7 +22,7 @@ remote = ovh-snc:vjourne-astree
 filename_encryption = obfuscate
 EOF
 
-rclone config password secret password $CRYPT_PASSWORD
+rclone config password secret password $PERSONAL_INIT_ARGS
 
 # Mount data
 mkdir ./data
