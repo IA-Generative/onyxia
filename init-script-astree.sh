@@ -1,5 +1,5 @@
 sudo apt update
-sudo apt install rclone fuse3
+sudo apt install rclone fuse3 -Y
 mkdir -p /home/onyxia/.config/rclone
 
 
