@@ -1,5 +1,5 @@
 # Install vscode extension
-code-server --install-extension ext install privy.privy-vscode
+code-server --install-extension privy.privy-vscode
 # Add privy conf to vscode
 jq '. + {
   "privy.providerBaseUrl": "https://ollama.c1.cloud-pi-native.com/",
