@@ -70,7 +70,7 @@ sleep 90
 done
 EOT
 
-chmod +x /home/onyxia/work/*.sh
+  chmod +x /home/onyxia/work/*.sh
 else
   /home/onyxia/work/restore_backup.sh
   sleep 90
