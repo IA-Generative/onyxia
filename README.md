@@ -3,7 +3,7 @@
 ## Vue d'ensemble
 Ce script, `init-script-beta.sh`, est conçu pour automatiser la configuration et la mise en place d'un environnement de développement utilisant VS Code Server et l'extension Privy. Il offre également des mécanismes pour créer et restaurer des sauvegardes des fichiers de configuration clés et des paquets installés.
 
-**Important** : Avant d'exécuter ce script, assurez-vous de remplir le fichier `/home/onyxia/work/apt_requirements.txt` avec les noms des paquets que vous souhaitez installer automatiquement lors de la restauration.
+**Important** : assurez-vous de remplir le fichier `/home/onyxia/work/apt_requirements.txt` avec les noms des paquets que vous souhaitez installer automatiquement lors de la restauration.
 
 ## Fonctionnalités
 - **Installation de l'extension VS Code Server** : Installe automatiquement l'extension Privy pour VS Code Server.
