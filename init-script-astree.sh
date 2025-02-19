@@ -1,7 +1,7 @@
 sudo apt update
-sudo apt install rclone fuse3 -y
+sudo apt install rclone fuse3 htop nvtop -y
 mkdir -p /home/onyxia/.config/rclone
-
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Add S3 rclone bucket [ovh-snc]
 cat << EOF > /home/onyxia/.config/rclone/rclone.conf 
