@@ -1,0 +1,438 @@
+{
+    "models": [
+        {
+            "title": "hhao/qwen2.5 coder tools latest",
+            "provider": "ollama",
+            "model": "hhao/qwen2.5-coder-tools:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "olmo2 13b",
+            "provider": "ollama",
+            "model": "olmo2:13b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "mistral small latest",
+            "provider": "ollama",
+            "model": "mistral-small:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 coder 32b",
+            "provider": "ollama",
+            "model": "qwen2.5-coder:32b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vanilj/Phi 4 latest",
+            "provider": "ollama",
+            "model": "vanilj/Phi-4:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vanilj/qwen2.5 coder 32b instruct iq4_xs latest",
+            "provider": "ollama",
+            "model": "vanilj/qwen2.5-coder-32b-instruct-iq4_xs:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3.3 70b instruct q3_K_S",
+            "provider": "ollama",
+            "model": "llama3.3:70b-instruct-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "yi latest",
+            "provider": "ollama",
+            "model": "yi:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3 70b instruct q3_K_S",
+            "provider": "ollama",
+            "model": "llama3:70b-instruct-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "nemotron 70b instruct q3_K_S",
+            "provider": "ollama",
+            "model": "nemotron:70b-instruct-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "hermes3 latest",
+            "provider": "ollama",
+            "model": "hermes3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 72b instruct q3_K_S",
+            "provider": "ollama",
+            "model": "qwen2.5:72b-instruct-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 coder latest",
+            "provider": "ollama",
+            "model": "qwen2.5-coder:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 32b",
+            "provider": "ollama",
+            "model": "qwen2.5:32b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "dolphin mixtral latest",
+            "provider": "ollama",
+            "model": "dolphin-mixtral:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 latest",
+            "provider": "ollama",
+            "model": "qwen2.5:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "glm4 latest",
+            "provider": "ollama",
+            "model": "glm4:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "wizardlm2 latest",
+            "provider": "ollama",
+            "model": "wizardlm2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "mistral latest",
+            "provider": "ollama",
+            "model": "mistral:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "codegemma latest",
+            "provider": "ollama",
+            "model": "codegemma:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3 latest",
+            "provider": "ollama",
+            "model": "llama3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vicuna 33b",
+            "provider": "ollama",
+            "model": "vicuna:33b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3.1 latest",
+            "provider": "ollama",
+            "model": "llama3.1:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "codegemma 7b code",
+            "provider": "ollama",
+            "model": "codegemma:7b-code",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "deepseek coder v2 latest",
+            "provider": "ollama",
+            "model": "deepseek-coder-v2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vicuna 13b v1.5 16k q8_0",
+            "provider": "ollama",
+            "model": "vicuna:13b-v1.5-16k-q8_0",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "gemma2 latest",
+            "provider": "ollama",
+            "model": "gemma2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "mixtral latest",
+            "provider": "ollama",
+            "model": "mixtral:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3 gradient latest",
+            "provider": "ollama",
+            "model": "llama3-gradient:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "adrienbrault/nous hermes2pro llama3 8b q8_0",
+            "provider": "ollama",
+            "model": "adrienbrault/nous-hermes2pro-llama3-8b:q8_0",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vicuna latest",
+            "provider": "ollama",
+            "model": "vicuna:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2 latest",
+            "provider": "ollama",
+            "model": "qwen2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "deepseek coder base",
+            "provider": "ollama",
+            "model": "deepseek-coder:base",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "internlm2 latest",
+            "provider": "ollama",
+            "model": "internlm2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "deepseek coder 1.3b base",
+            "provider": "ollama",
+            "model": "deepseek-coder:1.3b-base",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "codestral latest",
+            "provider": "ollama",
+            "model": "codestral:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "codellama latest",
+            "provider": "ollama",
+            "model": "codellama:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "phi3 latest",
+            "provider": "ollama",
+            "model": "phi3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "gemma2 27b",
+            "provider": "ollama",
+            "model": "gemma2:27b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "yi coder latest",
+            "provider": "ollama",
+            "model": "yi-coder:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "internlm2 20b",
+            "provider": "ollama",
+            "model": "internlm2:20b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "codegeex4 latest",
+            "provider": "ollama",
+            "model": "codegeex4:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "mistral nemo latest",
+            "provider": "ollama",
+            "model": "mistral-nemo:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "mannix/gemma2 9b simpo latest",
+            "provider": "ollama",
+            "model": "mannix/gemma2-9b-simpo:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 14b",
+            "provider": "ollama",
+            "model": "qwen2.5:14b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "starcoder2 latest",
+            "provider": "ollama",
+            "model": "starcoder2:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "qwen2.5 coder 1.5b",
+            "provider": "ollama",
+            "model": "qwen2.5-coder:1.5b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "athene v2 72b q3_K_S",
+            "provider": "ollama",
+            "model": "athene-v2:72b-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "falcon3 10b",
+            "provider": "ollama",
+            "model": "falcon3:10b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "dolphin llama3 latest",
+            "provider": "ollama",
+            "model": "dolphin-llama3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "llama3.1 70b instruct q3_K_S",
+            "provider": "ollama",
+            "model": "llama3.1:70b-instruct-q3_K_S",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "exaone3.5 latest",
+            "provider": "ollama",
+            "model": "exaone3.5:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "falcon3 latest",
+            "provider": "ollama",
+            "model": "falcon3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "jpacifico/chocolatine 14b latest",
+            "provider": "ollama",
+            "model": "jpacifico/chocolatine-14b:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "nezahatkorkmaz/deepseek v3 latest",
+            "provider": "ollama",
+            "model": "nezahatkorkmaz/deepseek-v3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "granite3.1 dense latest",
+            "provider": "ollama",
+            "model": "granite3.1-dense:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "dolphin3 latest",
+            "provider": "ollama",
+            "model": "dolphin3:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "deepseek r1 latest",
+            "provider": "ollama",
+            "model": "deepseek-r1:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "phi4 latest",
+            "provider": "ollama",
+            "model": "phi4:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "command r7b latest",
+            "provider": "ollama",
+            "model": "command-r7b:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "deepseek r1 32b",
+            "provider": "ollama",
+            "model": "deepseek-r1:32b",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        },
+        {
+            "title": "vanilj/phi 4 unsloth latest",
+            "provider": "ollama",
+            "model": "vanilj/phi-4-unsloth:latest",
+            "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+        }
+    ],
+    "tabAutocompleteModel": {
+        "title": "deepseek-coder:1.3b-base",
+        "provider": "ollama",
+        "model": "deepseek-coder:1.3b-base",
+        "apiBase": "__PLACEHOLDER_OLLAMA_URL__"
+    },
+    "embeddingsProvider": {
+        "title": "Nomic-embed-text",
+        "provider": "ollama",
+        "model": "nomic-embed-text:latest"
+    },
+    "customCommands": [
+        {
+            "name": "test",
+            "prompt": "{{{ input }}}\n\nWrite a comprehensive set of unit tests for the selected code. It should setup, run tests that check for correctness including important edge cases, and teardown. Ensure that the tests are complete and sophisticated. Give the tests just as chat output, don't edit any file.",
+            "description": "Write unit tests for highlighted code"
+        }
+    ],
+    "contextProviders": [
+        {
+            "name": "code",
+            "params": {}
+        },
+        {
+            "name": "docs",
+            "params": {}
+        },
+        {
+            "name": "diff",
+            "params": {}
+        },
+        {
+            "name": "terminal",
+            "params": {}
+        },
+        {
+            "name": "problems",
+            "params": {}
+        },
+        {
+            "name": "folder",
+            "params": {}
+        },
+        {
+            "name": "codebase",
+            "params": {}
+        }
+    ],
+    "slashCommands": [
+        {
+            "name": "share",
+            "description": "Export the current chat session to markdown"
+        },
+        {
+            "name": "cmd",
+            "description": "Generate a shell command"
+        },
+        {
+            "name": "commit",
+            "description": "Generate a git commit message"
+        }
+    ]
+}
