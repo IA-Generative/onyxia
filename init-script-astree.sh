@@ -27,3 +27,4 @@ rclone config password secret password $PERSONAL_INIT_ARGS
 # Mount data
 mkdir ./data
 rclone mount secret:vjourne-astree ./data --daemon
+code-server --install-extension anwar.papyrus-pdf
