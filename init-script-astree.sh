@@ -1,3 +1,5 @@
+curl -sSL https://raw.githubusercontent.com/IA-Generative/onyxia/main/init-script-continue.sh | bash
+
 sudo apt update
 sudo apt install rclone fuse3 htop nvtop -y
 mkdir -p /home/onyxia/.config/rclone
