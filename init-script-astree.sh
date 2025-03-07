@@ -13,6 +13,7 @@ provider = Scaleway
 env_auth = true
 endpoint = $AWS_S3_ENDPOINT
 region = $AWS_DEFAULT_REGION
+EOF
 
 # Mount data
 mkdir ./data
