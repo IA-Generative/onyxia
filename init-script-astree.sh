@@ -3,28 +3,16 @@ sudo apt install rclone fuse3 htop nvtop -y
 mkdir -p /home/onyxia/.config/rclone
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Add S3 rclone bucket [ovh-snc]
+# Add S3 rclone bucket [scw-astree]
 cat << EOF > /home/onyxia/.config/rclone/rclone.conf 
-[ovh-snc]
+[scw-astree]
 type = s3
-provider = Minio
+provider = Scaleway
 env_auth = true
 endpoint = $AWS_S3_ENDPOINT
 region = $AWS_DEFAULT_REGION
-acl = private
-server_side_encryption = aws:kms
-sse_kms_key_id = minio-kms-key
-upload_cutoff = 0
-
-[secret]
-type = crypt
-remote = ovh-snc:vjourne-astree
-filename_encryption = obfuscate
-EOF
-
-rclone config password secret password $PERSONAL_INIT_ARGS
 
 # Mount data
 mkdir ./data
-rclone mount secret:vjourne-astree ./data --daemon
+rclone mount scw-astree:siaj ./data --daemon
 code-server --install-extension anwar.papyrus-pdf
