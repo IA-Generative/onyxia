@@ -6,7 +6,7 @@ mkdir -p /home/onyxia/.config/rclone
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Add S3 rclone bucket [scw-astree]
-cat << EOF > /home/onyxia/.config/rclone/rclone.conf 
+cat << EOF > /home/onyxia/.config/rclone/rclone.conf
 [scw-astree]
 type = s3
 provider = Scaleway
@@ -19,3 +19,8 @@ EOF
 mkdir ./data
 rclone mount scw-astree:siaj ./data --daemon
 code-server --install-extension anwar.papyrus-pdf
+
+# Run custom user init script
+if [ -f /home/onyxia/work/.init/init.sh ]; then
+  cat /home/onyxia/work/.init/init.sh | bash
+fi
