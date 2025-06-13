@@ -19,3 +19,5 @@ EOF
 mkdir ./data
 rclone mount scw-astree:siaj ./data --daemon
 code-server --install-extension anwar.papyrus-pdf
+code-server --install-extension vivaxy.vscode-conventional-commits
+code-server --install-extension charliermarsh.ruff
