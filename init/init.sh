@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Add symlink to persistant .ssh directory
+# Add symlink to persistent .ssh directory
 if [ -d ~/.ssh ]; then
     mv ~/.ssh ~/.ssh."$(date +%s)"
 fi
