@@ -16,11 +16,12 @@ region = $AWS_DEFAULT_REGION
 EOF
 
 # Mount data
-mkdir ./data
-rclone mount scw-astree:siaj ./data --daemon
-code-server --install-extension anwar.papyrus-pdf
-code-server --install-extension vivaxy.vscode-conventional-commits
-code-server --install-extension charliermarsh.ruff
+mkdir -p /data
+rclone mount scw-astree:siaj /data --daemon
+
+#code-server --install-extension anwar.papyrus-pdf
+#code-server --install-extension vivaxy.vscode-conventional-commits
+#code-server --install-extension charliermarsh.ruff
 
 # Run custom user init script
 if [ -f /home/onyxia/work/.init/init.sh ]; then
