@@ -6,7 +6,7 @@ mkdir -p /home/onyxia/.config/rclone
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Add S3 rclone bucket [scw-astree]
-cat << EOF > /home/onyxia/.config/rclone/rclone.conf 
+cat << EOF > /home/onyxia/.config/rclone/rclone.conf
 [scw-astree]
 type = s3
 provider = Scaleway
@@ -16,9 +16,8 @@ region = $AWS_DEFAULT_REGION
 EOF
 
 # Mount data
-mkdir -p ./data
-#montage à faire manuellement (démarrage service fortement ralenti sinon)
-#rclone mount scw-astree:siaj ./data --daemon
+mkdir -p /data
+rclone mount scw-astree:siaj /data --daemon
 
 #code-server --install-extension anwar.papyrus-pdf
 #code-server --install-extension vivaxy.vscode-conventional-commits
