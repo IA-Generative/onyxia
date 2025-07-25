@@ -20,9 +20,8 @@ region = $AWS_DEFAULT_REGION
 EOF
 
 # Mount data
-sudo mkdir -p /data
-sudo chown onyxia:users /data
-rclone mount scw-astree:siaj /data --daemon
+mkdir -p /home/onyxia/data
+rclone mount scw-astree:siaj /home/onyxia/data --daemon
 
 #code-server --install-extension anwar.papyrus-pdf
 #code-server --install-extension vivaxy.vscode-conventional-commits
