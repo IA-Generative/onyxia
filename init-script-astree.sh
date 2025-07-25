@@ -5,6 +5,10 @@ sudo apt install rclone fuse3 htop nvtop -y
 mkdir -p /home/onyxia/.config/rclone
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# Install FR locales
+sudo locale-gen fr_FR.UTF-8
+sudo update-locale
+
 # Add S3 rclone bucket [scw-astree]
 cat << EOF > /home/onyxia/.config/rclone/rclone.conf
 [scw-astree]
