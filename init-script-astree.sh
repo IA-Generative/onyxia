@@ -16,7 +16,8 @@ region = $AWS_DEFAULT_REGION
 EOF
 
 # Mount data
-mkdir -p /data
+sudo mkdir -p /data
+sudo chown onyxia:users /data
 rclone mount scw-astree:siaj /data --daemon
 
 #code-server --install-extension anwar.papyrus-pdf
