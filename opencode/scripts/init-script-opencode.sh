@@ -20,9 +20,15 @@ NC='\033[0m' # No Color
 OPENCODE_VERSION="${OPENCODE_VERSION:-latest}"
 OPENCODE_INSTALL_DIR="${OPENCODE_INSTALL_DIR:-$HOME/.opencode}"
 OPENCODE_BIN="$OPENCODE_INSTALL_DIR/bin/opencode"
-OPENCODE_CONFIG_DIR="$HOME/.config/opencode"
+OPENCODE_CONFIG_DIR="${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}"
 WORK_DIR="${WORK_DIR:-$HOME/work}"
 OPENCODE_CONFIG_FILE="$WORK_DIR/opencode.json"
+
+# Support for non-login shells in containers (Onyxia)
+if [ -z "$HOME" ] || [ ! -d "$HOME" ]; then
+    HOME="${HOME_DIR:-/home/onyxia}"
+    export HOME
+fi
 
 # URLs par défaut
 SPARK_API_URL="${SPARK_API_URL:-https://your-spark-api-endpoint.example.com/v1}"
@@ -90,6 +96,100 @@ check_required_env_vars() {
     fi
     
     log_success "Variables d'environnement vérifiées"
+}
+
+# Installer OpenCode (version binaire directe)
+install_opencode_direct() {
+    if [ -f "$OPENCODE_BIN" ]; then
+        local current_version=$("$OPENCODE_BIN" --version 2>/dev/null || echo "unknown")
+        log_info "OpenCode déjà installé (version: $current_version)"
+        
+        if [ "$OPENCODE_VERSION" != "latest" ] && [ "$current_version" != "$OPENCODE_VERSION" ]; then
+            log_warning "Version différente demandée, réinstallation..."
+        else
+            log_success "OpenCode est déjà installé"
+            return 0
+        fi
+    fi
+    
+    # Vérifier si opencode est installé ailleurs (ex: /home/onyxia/.opencode)
+    for alt_dir in /home/onyxia/.opencode /root/.opencode; do
+        if [ -f "$alt_dir/bin/opencode" ]; then
+            log_info "OpenCode trouvé dans $alt_dir"
+            mkdir -p "$OPENCODE_INSTALL_DIR"
+            cp "$alt_dir/bin/opencode" "$OPENCODE_BIN" 2>/dev/null || true
+            chmod +x "$OPENCODE_BIN" 2>/dev/null || true
+            if [ -f "$OPENCODE_BIN" ]; then
+                local installed_version=$("$OPENCODE_BIN" --version 2>/dev/null || echo "unknown")
+                log_success "OpenCode installé depuis $alt_dir (version: $installed_version)"
+                return 0
+            fi
+        fi
+    done
+    
+    log_info "Installation d'OpenCode..."
+    
+    # Détecter l'architecture
+    local arch=$(uname -m)
+    local platform="linux"
+    
+    case "$arch" in
+        x86_64)
+            arch="x64"
+            ;;
+        aarch64|arm64)
+            arch="arm64"
+            ;;
+        *)
+            log_error "Architecture non supportée: $arch"
+            exit 1
+            ;;
+    esac
+    
+    # Créer le répertoire d'installation
+    mkdir -p "$OPENCODE_INSTALL_DIR"
+    
+    # Télécharger et installer OpenCode
+    log_info "Téléchargement d'OpenCode pour $platform-$arch..."
+    
+    local install_script=$(mktemp)
+    curl -fsSL https://raw.githubusercontent.com/opencode-ai/opencode/refs/heads/main/install -o "$install_script"
+    
+    if [ ! -s "$install_script" ]; then
+        log_error "Échec du téléchargement du script d'installation"
+        rm -f "$install_script"
+        exit 1
+    fi
+    
+    bash "$install_script"
+    rm -f "$install_script"
+    
+    # Vérifier l'installation
+    if [ -f "$OPENCODE_BIN" ]; then
+        local installed_version=$("$OPENCODE_BIN" --version 2>/dev/null || echo "unknown")
+        log_success "OpenCode installé avec succès (version: $installed_version)"
+    else
+        log_error "L'installation d'OpenCode a échoué"
+        exit 1
+    fi
+    
+    # Ajouter au PATH si nécessaire
+    if ! echo "$PATH" | grep -q "$OPENCODE_INSTALL_DIR/bin"; then
+        log_info "Ajout d'OpenCode au PATH..."
+        
+        # Ajouter au .bashrc
+        if [ -f "$HOME/.bashrc" ]; then
+            if ! grep -q "OPENCODE_INSTALL_DIR" "$HOME/.bashrc"; then
+                echo "" >> "$HOME/.bashrc"
+                echo "# OpenCode" >> "$HOME/.bashrc"
+                echo "export PATH=\"$OPENCODE_INSTALL_DIR/bin:\$PATH\"" >> "$HOME/.bashrc"
+                log_success "PATH mis à jour dans .bashrc"
+            fi
+        fi
+        
+        # Ajouter au PATH actuel
+        export PATH="$OPENCODE_INSTALL_DIR/bin:$PATH"
+    fi
 }
 
 # Installation des dépendances
@@ -205,7 +305,7 @@ install_opencode() {
     log_info "Téléchargement d'OpenCode pour $platform-$arch..."
     
     local install_script=$(mktemp)
-    curl -fsSL https://opencode.ai/install.sh -o "$install_script"
+    curl -fsSL https://raw.githubusercontent.com/opencode-ai/opencode/refs/heads/main/install -o "$install_script"
     
     if [ ! -s "$install_script" ]; then
         log_error "Échec du téléchargement du script d'installation"
@@ -410,7 +510,7 @@ main() {
     configure_gh_cli
     
     # Étape 3: Installer OpenCode
-    install_opencode
+    install_opencode_direct
     
     # Étape 4: Créer la configuration
     create_opencode_config
