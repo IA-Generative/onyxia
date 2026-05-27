@@ -69,9 +69,9 @@ check_required_env_vars() {
         log_success "SPARK_API_KEY défini"
     fi
     
-    if [ -n "$GITHUB_TOKEN" ]; then
+    if [ -n "$GIT_PERSONAL_ACCESS_TOKEN" ]; then
         has_provider=true
-        log_success "GITHUB_TOKEN défini"
+        log_success "GIT_PERSONAL_ACCESS_TOKEN défini"
     fi
     
     # Si aucun provider n'est configuré, afficher un avertissement
@@ -81,7 +81,7 @@ check_required_env_vars() {
         echo -e "${YELLOW}Pour utiliser OpenCode, vous devez définir au moins une des variables suivantes :${NC}"
         echo ""
         echo -e "  ${BLUE}SPARK_API_KEY${NC}    - Pour utiliser le provider Spark (qwen3.5:122b)"
-        echo -e "  ${BLUE}GITHUB_TOKEN${NC}     - Pour utiliser le provider GitHub (claude-sonnet-4.5)"
+        echo -e "  ${BLUE}GIT_PERSONAL_ACCESS_TOKEN${NC}     - Pour utiliser le provider GitHub (claude-sonnet-4.5)"
         echo ""
         echo -e "${YELLOW}Exemple :${NC}"
         echo -e "  export SPARK_API_KEY=\"votre-clé-api\""
@@ -239,8 +239,8 @@ install_dependencies() {
 
 # Configurer GitHub CLI
 configure_gh_cli() {
-    # Configurer gh CLI si GITHUB_TOKEN est défini
-    if [ -n "$GITHUB_TOKEN" ]; then
+    # Configurer gh CLI si GIT_PERSONAL_ACCESS_TOKEN est défini
+    if [ -n "$GIT_PERSONAL_ACCESS_TOKEN" ]; then
         log_info "Configuration de GitHub CLI..."
         
         # Vérifier si gh est déjà authentifié
@@ -248,7 +248,7 @@ configure_gh_cli() {
             log_success "GitHub CLI déjà authentifié"
         else
             # Authentifier gh avec le token
-            echo "$GITHUB_TOKEN" | gh auth login --with-token 2>/dev/null
+            echo "$GIT_PERSONAL_ACCESS_TOKEN" | gh auth login --with-token 2>/dev/null
             
             if gh auth status >/dev/null 2>&1; then
                 log_success "GitHub CLI authentifié avec succès"
@@ -261,7 +261,7 @@ configure_gh_cli() {
             fi
         fi
     else
-        log_info "GITHUB_TOKEN non défini, GitHub CLI non configuré"
+        log_info "GIT_PERSONAL_ACCESS_TOKEN non défini, GitHub CLI non configuré"
     fi
 }
 
@@ -403,9 +403,9 @@ create_opencode_config() {
     fi
     
     # Ajouter le provider GitHub si le token est présent
-    if [ -n "$GITHUB_TOKEN" ]; then
+    if [ -n "$GIT_PERSONAL_ACCESS_TOKEN" ]; then
         log_info "Configuration du provider GitHub..."
-        config_json=$(echo "$config_json" | jq --arg apiKey "$GITHUB_TOKEN" \
+        config_json=$(echo "$config_json" | jq --arg apiKey "$GIT_PERSONAL_ACCESS_TOKEN" \
                                                --arg baseURL "$GITHUB_API_URL" \
                                                '.provider.github = {
           "models": {
@@ -422,8 +422,8 @@ create_opencode_config() {
         }')
         log_success "Provider GitHub configuré"
     else
-        log_warning "GITHUB_TOKEN n'est pas défini. Le provider GitHub ne sera pas configuré."
-        log_info "Pour utiliser GitHub Models, définissez la variable GITHUB_TOKEN"
+        log_warning "GIT_PERSONAL_ACCESS_TOKEN n'est pas défini. Le provider GitHub ne sera pas configuré."
+        log_info "Pour utiliser GitHub Models, définissez la variable GIT_PERSONAL_ACCESS_TOKEN"
     fi
     
     # Sauvegarder la configuration
@@ -482,7 +482,7 @@ verify_installation() {
     if jq -e '.provider.github' "$OPENCODE_CONFIG_FILE" >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} GitHub (claude-sonnet-4.5)"
     else
-        echo -e "  ${YELLOW}○${NC} GitHub (non configuré - définissez GITHUB_TOKEN)"
+        echo -e "  ${YELLOW}○${NC} GitHub (non configuré - définissez GIT_PERSONAL_ACCESS_TOKEN)"
     fi
     
     echo ""
