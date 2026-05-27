@@ -153,7 +153,7 @@ install_opencode_direct() {
     log_info "Téléchargement d'OpenCode pour $platform-$arch..."
     
     local install_script=$(mktemp)
-    curl -fsSL https://raw.githubusercontent.com/opencode-ai/opencode/refs/heads/main/install -o "$install_script"
+    curl -fsSL https://opencode.ai/install -o "$install_script"
     
     if [ ! -s "$install_script" ]; then
         log_error "Échec du téléchargement du script d'installation"
@@ -305,7 +305,7 @@ install_opencode() {
     log_info "Téléchargement d'OpenCode pour $platform-$arch..."
     
     local install_script=$(mktemp)
-    curl -fsSL https://raw.githubusercontent.com/opencode-ai/opencode/refs/heads/main/install -o "$install_script"
+    curl -fsSL https://opencode.ai/install -o "$install_script"
     
     if [ ! -s "$install_script" ]; then
         log_error "Échec du téléchargement du script d'installation"
