@@ -152,10 +152,6 @@ configure_gh_cli() {
             
             if gh auth status >/dev/null 2>&1; then
                 log_success "GitHub CLI authentifié avec succès"
-                
-                # Configurer les permissions pour les repos, workflows, org et projects
-                gh auth refresh -h github.com -s repo,workflow,read:org,read:project 2>/dev/null || true
-                log_info "Permissions configurées : repo, workflow, read:org, read:project"
             else
                 log_warning "Échec de l'authentification GitHub CLI (non bloquant)"
             fi
