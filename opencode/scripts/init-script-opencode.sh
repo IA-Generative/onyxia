@@ -228,6 +228,9 @@ install_opencode() {
     
     # Ajouter au PATH actuel
     export PATH="$OPENCODE_INSTALL_DIR/bin:$PATH"
+    
+    # Créer un symlink dans /usr/local/bin pour que opencode soit accessible partout
+    ln -sf "$OPENCODE_BIN" /usr/local/bin/opencode
 }
 
 # Créer la configuration OpenCode
