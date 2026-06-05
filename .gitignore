@@ -1,1 +1,3 @@
 values-*.yaml
+opencode/config/.env
+opencode/config/.env.test

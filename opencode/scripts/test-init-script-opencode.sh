@@ -1,70 +1,64 @@
 #!/bin/bash
+# test-init-script-opencode.sh — Teste init-script-opencode.sh
+set -e
 
-#############################################
-# test-init-script-opencode.sh
-# Script de test pour init-script-opencode.sh
-#############################################
-
-echo "========================================="
-echo "  Test du script init-script-opencode.sh"
-echo "========================================="
-echo ""
-
-# Charger les variables d'environnement de test
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ -f "$SCRIPT_DIR/.env.test" ]; then
-    echo "Chargement des variables de test depuis .env.test..."
-    source "$SCRIPT_DIR/.env.test"
-    echo "✓ Variables chargées"
+ENV_FILE="${SCRIPT_DIR}/../config/.env.test"
+INIT_SCRIPT="${SCRIPT_DIR}/init-script-opencode.sh"
+CONFIG_FILE="${HOME}/.config/opencode/opencode.json"
+
+GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
+pass() { echo -e "${GREEN}[PASS]${NC} $1"; }
+fail() { echo -e "${RED}[FAIL]${NC} $1"; exit 1; }
+
+echo "=== Test init-script-opencode.sh ==="
+
+# Charger les variables
+if [ -f "${ENV_FILE}" ]; then
+  source "${ENV_FILE}"
+  echo "Variables chargées depuis ${ENV_FILE}"
 else
-    echo "⚠️  Fichier .env.test non trouvé, utilisation de valeurs par défaut"
-    export SPARK_API_KEY="sk-test-spark-key"
-    export SPARK_API_URL="https://your-spark-api-endpoint.example.com/v1"
-    export GITHUB_TOKEN="ghp-test-github-token"
-fi
-echo ""
-
-# Créer un répertoire de test temporaire
-TEST_DIR="/tmp/opencode-test-$(date +%s)"
-mkdir -p "$TEST_DIR"
-
-echo "Répertoire de test: $TEST_DIR"
-echo ""
-
-# Copier le script dans le répertoire de test
-cp /home/onyxia/work/init-script-opencode.sh "$TEST_DIR/"
-
-# Exécuter le script avec un répertoire de travail de test
-cd "$TEST_DIR"
-export WORK_DIR="$TEST_DIR"
-export OPENCODE_INSTALL_DIR="$HOME/.opencode"  # Utiliser l'installation existante
-
-echo "Exécution du script..."
-echo ""
-
-bash "$TEST_DIR/init-script-opencode.sh"
-
-echo ""
-echo "========================================="
-echo "  Vérification des résultats"
-echo "========================================="
-echo ""
-
-# Vérifier que le fichier de config a été créé
-if [ -f "$TEST_DIR/opencode.json" ]; then
-    echo "✓ Fichier de configuration créé"
-    echo ""
-    echo "Contenu de la configuration:"
-    cat "$TEST_DIR/opencode.json" | jq .
-else
-    echo "✗ Fichier de configuration non créé"
-    exit 1
+  fail "Fichier ${ENV_FILE} introuvable"
 fi
 
+# Sauvegarder la config existante si présente
+BACKUP_FILE=""
+if [ -f "${CONFIG_FILE}" ]; then
+  BACKUP_FILE="${CONFIG_FILE}.bak"
+  cp "${CONFIG_FILE}" "${BACKUP_FILE}"
+  echo "Config existante sauvegardée dans ${BACKUP_FILE}"
+fi
+
+# Lancer le script
 echo ""
-echo "========================================="
-echo "  Test terminé avec succès !"
-echo "========================================="
+bash "${INIT_SCRIPT}"
 echo ""
-echo "Répertoire de test: $TEST_DIR"
-echo "Pour nettoyer: rm -rf $TEST_DIR"
+
+# Vérifications
+echo "=== Vérifications ==="
+
+[ -f "${CONFIG_FILE}" ] && pass "Fichier ${CONFIG_FILE} créé" || fail "Fichier ${CONFIG_FILE} absent"
+
+jq . "${CONFIG_FILE}" > /dev/null 2>&1 && pass "JSON valide" || fail "JSON invalide"
+
+jq -e '.provider.spark' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Provider spark présent" || fail "Provider spark absent"
+
+jq -e '.provider.spark.models["qwen3.5:122b"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Modèle qwen3.5:122b présent" || fail "Modèle qwen3.5:122b absent"
+
+jq -e '.provider.spark.options.apiKey == "{env:API_KEY}"' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "apiKey référence {env:API_KEY}" || fail "apiKey incorrect"
+
+jq -e '.mcp.searchcode' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "MCP searchcode présent" || fail "MCP searchcode absent"
+
+echo ""
+echo "Contenu généré :"
+jq . "${CONFIG_FILE}"
+
+# Restaurer la config si elle existait
+if [ -n "${BACKUP_FILE}" ]; then
+  mv "${BACKUP_FILE}" "${CONFIG_FILE}"
+  echo ""
+  echo "Config originale restaurée."
+fi
+
+echo ""
+echo "=== Tous les tests passés ==="
