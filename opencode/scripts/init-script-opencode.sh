@@ -52,12 +52,9 @@ install_config() {
 
 # --- Installation extension VS Code Copilot ---
 install_copilot() {
-  if [ -z "${EXTENSIONS_GALLERY}" ]; then
-    log_info "EXTENSIONS_GALLERY non défini — installation de Copilot ignorée."
-    return
-  fi
+  export EXTENSIONS_GALLERY='{"serviceUrl":"https://marketplace.visualstudio.com/_apis/public/gallery","cacheUrl":"https://vscode.blob.core.windows.net/gallery/index","itemUrl":"https://marketplace.visualstudio.com/items"}'
   log_info "Installation de l'extension GitHub Copilot..."
-  EXTENSIONS_GALLERY="${EXTENSIONS_GALLERY}" code-server --install-extension GitHub.copilot 2>&1 \
+  code-server --install-extension GitHub.copilot 2>&1 \
     && log_info "GitHub Copilot installé." \
     || log_info "Échec installation Copilot (extension peut-être déjà présente ou non disponible)."
 }
