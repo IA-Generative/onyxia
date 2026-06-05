@@ -1,0 +1,35 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "spark": {
+      "name": "spark",
+      "npm": "@ai-sdk/openai-compatible",
+      "models": {
+        "qwen3.5:122b": { "name": "qwen3.5:122b", "_launch": true }
+      },
+      "options": {
+        "apiKey": "{env:API_KEY}",
+        "baseURL": "{env:API_URL}"
+      }
+    },
+    "infocepo-nothink": {
+      "name": "infocepo-nothink",
+      "npm": "@ai-sdk/openai-compatible",
+      "models": {
+        "ai-tools": { "name": "ai-tools", "_launch": true }
+      },
+      "options": {
+        "apiKey": "{env:NOTHINK_API_KEY}",
+        "baseURL": "{env:NOTHINK_API_URL}"
+      }
+    }
+  },
+  "agent": {
+    "build":    { "temperature": 0.1 },
+    "plan":     { "temperature": 0.1 },
+    "creative": { "temperature": 0.8 }
+  },
+  "mcp": {
+    "searchcode": { "type": "remote", "url": "https://api.searchcode.com/v1/mcp" }
+  }
+}
