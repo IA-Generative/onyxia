@@ -29,7 +29,7 @@ if [ -f "${CONFIG_FILE}" ]; then
   echo "Config existante sauvegardée dans ${BACKUP_FILE}"
 fi
 
-# Lancer le script
+# Lancer le script (sans install_copilot qui nécessite un vrai code-server)
 echo ""
 bash "${INIT_SCRIPT}"
 echo ""
@@ -41,11 +41,11 @@ echo "=== Vérifications ==="
 
 jq . "${CONFIG_FILE}" > /dev/null 2>&1 && pass "JSON valide" || fail "JSON invalide"
 
-jq -e '.provider.spark' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Provider spark présent" || fail "Provider spark absent"
+jq -e '.provider["infocepo-nothink"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Provider infocepo-nothink présent" || fail "Provider infocepo-nothink absent"
 
-jq -e '.provider.spark.models["qwen3.5:122b"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Modèle qwen3.5:122b présent" || fail "Modèle qwen3.5:122b absent"
+jq -e '.provider["infocepo-nothink"].models["ai-tools"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Modèle ai-tools présent" || fail "Modèle ai-tools absent"
 
-jq -e '.provider.spark.options.apiKey == "{env:API_KEY}"' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "apiKey référence {env:API_KEY}" || fail "apiKey incorrect"
+jq -e '.provider["infocepo-nothink"].options.apiKey == "{env:API_KEY}"' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "apiKey référence {env:API_KEY}" || fail "apiKey incorrect"
 
 jq -e '.mcp.searchcode' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "MCP searchcode présent" || fail "MCP searchcode absent"
 
