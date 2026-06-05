@@ -14,9 +14,9 @@ log_error() { echo -e "${RED}[opencode]${NC} $1"; }
 
 # --- Vérification des variables d'environnement ---
 check_env() {
-  if [ -z "${API_KEY}" ] && [ -z "${NOTHINK_API_KEY}" ]; then
-    log_error "Au moins API_KEY ou NOTHINK_API_KEY est requis."
-    log_error "Définissez-les dans les secrets Onyxia ou via export."
+  if [ -z "${API_KEY}" ]; then
+    log_error "API_KEY est requis."
+    log_error "Définissez-le dans les secrets Onyxia ou via export."
     exit 1
   fi
 }
