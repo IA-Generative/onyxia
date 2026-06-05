@@ -50,8 +50,21 @@ install_config() {
   log_info "Config copiée dans ${OPENCODE_CONFIG_FILE}"
 }
 
+# --- Installation extension VS Code Copilot ---
+install_copilot() {
+  if [ -z "${EXTENSIONS_GALLERY}" ]; then
+    log_info "EXTENSIONS_GALLERY non défini — installation de Copilot ignorée."
+    return
+  fi
+  log_info "Installation de l'extension GitHub Copilot..."
+  EXTENSIONS_GALLERY="${EXTENSIONS_GALLERY}" code-server --install-extension GitHub.copilot 2>&1 \
+    && log_info "GitHub Copilot installé." \
+    || log_info "Échec installation Copilot (extension peut-être déjà présente ou non disponible)."
+}
+
 # --- Main ---
 check_env
 install_opencode
 install_config
+install_copilot
 log_info "OpenCode prêt."
