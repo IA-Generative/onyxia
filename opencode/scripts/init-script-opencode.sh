@@ -61,16 +61,23 @@ install_project_config() {
 install_gh() {
   if command -v gh &>/dev/null; then
     log_info "GitHub CLI déjà installé : $(gh --version | head -1)"
-    return
+  else
+    log_info "Installation de GitHub CLI..."
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+      | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 2>/dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt-get update -qq && sudo apt-get install -y gh
+    log_info "GitHub CLI installé : $(gh --version | head -1)"
   fi
 
-  log_info "Installation de GitHub CLI..."
-  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-    | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 2>/dev/null
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-    | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-  sudo apt-get update -qq && sudo apt-get install -y gh
-  log_info "GitHub CLI installé : $(gh --version | head -1)"
+  if [ -n "${GIT_PERSONAL_ACCESS_TOKEN}" ]; then
+    echo "${GIT_PERSONAL_ACCESS_TOKEN}" | gh auth login --with-token 2>/dev/null \
+      && log_info "GitHub CLI authentifié avec GIT_PERSONAL_ACCESS_TOKEN." \
+      || log_info "Authentification gh échouée (token invalide ?)."
+  else
+    log_info "GIT_PERSONAL_ACCESS_TOKEN non défini — gh non authentifié."
+  fi
 }
 
 # --- Installation extension VS Code Copilot ---
