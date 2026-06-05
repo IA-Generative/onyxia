@@ -5,7 +5,8 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="${SCRIPT_DIR}/../config/.env.test"
 INIT_SCRIPT="${SCRIPT_DIR}/init-script-opencode.sh"
-CONFIG_FILE="${HOME}/.config/opencode/opencode.json"
+GLOBAL_CONFIG="${HOME}/.config/opencode/opencode.json"
+PROJECT_CONFIG="${HOME}/work/opencode.json"
 
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
 pass() { echo -e "${GREEN}[PASS]${NC} $1"; }
@@ -21,44 +22,70 @@ else
   fail "Fichier ${ENV_FILE} introuvable"
 fi
 
-# Sauvegarder la config existante si présente
-BACKUP_FILE=""
-if [ -f "${CONFIG_FILE}" ]; then
-  BACKUP_FILE="${CONFIG_FILE}.bak"
-  cp "${CONFIG_FILE}" "${BACKUP_FILE}"
-  echo "Config existante sauvegardée dans ${BACKUP_FILE}"
-fi
+# Sauvegarder les configs existantes
+[ -f "${GLOBAL_CONFIG}" ] && cp "${GLOBAL_CONFIG}" "${GLOBAL_CONFIG}.bak"
+[ -f "${PROJECT_CONFIG}" ] && cp "${PROJECT_CONFIG}" "${PROJECT_CONFIG}.bak"
 
-# Lancer le script (sans install_copilot qui nécessite un vrai code-server)
+# Lancer le script
 echo ""
 bash "${INIT_SCRIPT}"
 echo ""
 
-# Vérifications
-echo "=== Vérifications ==="
+echo "=== Vérifications config globale (~/.config/opencode/opencode.json) ==="
 
-[ -f "${CONFIG_FILE}" ] && pass "Fichier ${CONFIG_FILE} créé" || fail "Fichier ${CONFIG_FILE} absent"
+[ -f "${GLOBAL_CONFIG}" ] \
+  && pass "Fichier global créé" \
+  || fail "Fichier global absent"
 
-jq . "${CONFIG_FILE}" > /dev/null 2>&1 && pass "JSON valide" || fail "JSON invalide"
+jq . "${GLOBAL_CONFIG}" > /dev/null 2>&1 \
+  && pass "JSON global valide" \
+  || fail "JSON global invalide"
 
-jq -e '.provider["infocepo-nothink"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Provider infocepo-nothink présent" || fail "Provider infocepo-nothink absent"
+jq -e '.provider["infocepo-nothink"]' "${GLOBAL_CONFIG}" > /dev/null 2>&1 \
+  && pass "Provider infocepo-nothink présent" \
+  || fail "Provider infocepo-nothink absent"
 
-jq -e '.provider["infocepo-nothink"].models["ai-tools"]' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "Modèle ai-tools présent" || fail "Modèle ai-tools absent"
+jq -e '.provider["infocepo-nothink"].options.apiKey == "{env:API_KEY}"' "${GLOBAL_CONFIG}" > /dev/null 2>&1 \
+  && pass "apiKey référence {env:API_KEY}" \
+  || fail "apiKey incorrect"
 
-jq -e '.provider["infocepo-nothink"].options.apiKey == "{env:API_KEY}"' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "apiKey référence {env:API_KEY}" || fail "apiKey incorrect"
-
-jq -e '.mcp.searchcode' "${CONFIG_FILE}" > /dev/null 2>&1 && pass "MCP searchcode présent" || fail "MCP searchcode absent"
+jq -e '.mcp.searchcode' "${GLOBAL_CONFIG}" > /dev/null 2>&1 \
+  && pass "MCP searchcode présent" \
+  || fail "MCP searchcode absent"
 
 echo ""
-echo "Contenu généré :"
-jq . "${CONFIG_FILE}"
+echo "=== Vérifications config projet (~/work/opencode.json) ==="
 
-# Restaurer la config si elle existait
-if [ -n "${BACKUP_FILE}" ]; then
-  mv "${BACKUP_FILE}" "${CONFIG_FILE}"
-  echo ""
-  echo "Config originale restaurée."
-fi
+[ -f "${PROJECT_CONFIG}" ] \
+  && pass "Fichier projet créé" \
+  || fail "Fichier projet absent"
+
+jq . "${PROJECT_CONFIG}" > /dev/null 2>&1 \
+  && pass "JSON projet valide" \
+  || fail "JSON projet invalide"
+
+jq -e '.plugin | length > 0' "${PROJECT_CONFIG}" > /dev/null 2>&1 \
+  && pass "Plugin superpowers présent" \
+  || fail "Plugin superpowers absent"
+
+jq -e '.skills.urls | length > 0' "${PROJECT_CONFIG}" > /dev/null 2>&1 \
+  && pass "skills.urls présent" \
+  || fail "skills.urls absent"
+
+jq -e '.permission.skill' "${PROJECT_CONFIG}" > /dev/null 2>&1 \
+  && pass "Permission skills présente" \
+  || fail "Permission skills absente"
+
+echo ""
+echo "Config globale :"
+jq . "${GLOBAL_CONFIG}"
+echo ""
+echo "Config projet :"
+jq . "${PROJECT_CONFIG}"
+
+# Restaurer les configs
+[ -f "${GLOBAL_CONFIG}.bak" ] && mv "${GLOBAL_CONFIG}.bak" "${GLOBAL_CONFIG}" && echo "Config globale restaurée."
+[ -f "${PROJECT_CONFIG}.bak" ] && mv "${PROJECT_CONFIG}.bak" "${PROJECT_CONFIG}" && echo "Config projet restaurée."
 
 echo ""
 echo "=== Tous les tests passés ==="

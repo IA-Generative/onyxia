@@ -1,11 +1,13 @@
 #!/bin/bash
 # init-script-opencode.sh — Configure OpenCode pour Onyxia
-# Variables requises : au moins API_KEY+API_URL ou NOTHINK_API_KEY+NOTHINK_API_URL
+# Variables requises : API_KEY, API_URL
 set -e
 
 OPENCODE_CONFIG_DIR="${HOME}/.config/opencode"
 OPENCODE_CONFIG_FILE="${OPENCODE_CONFIG_DIR}/opencode.json"
+WORK_DIR="${HOME}/work"
 REPO_RAW="https://raw.githubusercontent.com/IA-Generative/onyxia/refs/heads/feat/init-script-opencode"
+STARTER_KIT_RAW="https://raw.githubusercontent.com/dnum-mi/starter-kit-opencode/main"
 
 # --- Couleurs ---
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
@@ -42,11 +44,17 @@ install_opencode() {
   log_info "OpenCode installé : $(opencode --version 2>/dev/null)"
 }
 
-# --- Téléchargement de la config globale ---
-install_config() {
+# --- Config globale : provider + agents + MCP → ~/.config/opencode/opencode.json ---
+install_global_config() {
   mkdir -p "${OPENCODE_CONFIG_DIR}"
   curl -fsSL "${REPO_RAW}/opencode/config/opencode-global.json" -o "${OPENCODE_CONFIG_FILE}"
-  log_info "Config téléchargée dans ${OPENCODE_CONFIG_FILE}"
+  log_info "Config provider écrite dans ${OPENCODE_CONFIG_FILE}"
+}
+
+# --- Config projet : starter-kit dnum-mi → ~/work/opencode.json ---
+install_project_config() {
+  curl -fsSL "${STARTER_KIT_RAW}/opencode.json" -o "${WORK_DIR}/opencode.json"
+  log_info "Config projet (starter-kit) écrite dans ${WORK_DIR}/opencode.json"
 }
 
 # --- Installation extension VS Code Copilot ---
@@ -61,6 +69,7 @@ install_copilot() {
 # --- Main ---
 check_env
 install_opencode
-install_config
+install_global_config
+install_project_config
 install_copilot
 log_info "OpenCode prêt."
