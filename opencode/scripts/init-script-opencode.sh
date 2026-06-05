@@ -57,6 +57,22 @@ install_project_config() {
   log_info "Config projet (starter-kit) écrite dans ${WORK_DIR}/opencode.json"
 }
 
+# --- Installation GitHub CLI ---
+install_gh() {
+  if command -v gh &>/dev/null; then
+    log_info "GitHub CLI déjà installé : $(gh --version | head -1)"
+    return
+  fi
+
+  log_info "Installation de GitHub CLI..."
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 2>/dev/null
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  sudo apt-get update -qq && sudo apt-get install -y gh
+  log_info "GitHub CLI installé : $(gh --version | head -1)"
+}
+
 # --- Installation extension VS Code Copilot ---
 install_copilot() {
   export EXTENSIONS_GALLERY='{"serviceUrl":"https://marketplace.visualstudio.com/_apis/public/gallery","cacheUrl":"https://vscode.blob.core.windows.net/gallery/index","itemUrl":"https://marketplace.visualstudio.com/items"}'
@@ -69,6 +85,7 @@ install_copilot() {
 # --- Main ---
 check_env
 install_opencode
+install_gh
 install_global_config
 install_project_config
 install_copilot
