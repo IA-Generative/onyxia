@@ -3,10 +3,9 @@
 # Variables requises : au moins API_KEY+API_URL ou NOTHINK_API_KEY+NOTHINK_API_URL
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENCODE_CONFIG_DIR="${HOME}/.config/opencode"
 OPENCODE_CONFIG_FILE="${OPENCODE_CONFIG_DIR}/opencode.json"
-CONFIG_TEMPLATE="${SCRIPT_DIR}/../config/opencode-global.json"
+REPO_RAW="https://raw.githubusercontent.com/IA-Generative/onyxia/refs/heads/feat/init-script-opencode"
 
 # --- Couleurs ---
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
@@ -43,11 +42,11 @@ install_opencode() {
   log_info "OpenCode installé : $(opencode --version 2>/dev/null)"
 }
 
-# --- Copie de la config globale ---
+# --- Téléchargement de la config globale ---
 install_config() {
   mkdir -p "${OPENCODE_CONFIG_DIR}"
-  cp "${CONFIG_TEMPLATE}" "${OPENCODE_CONFIG_FILE}"
-  log_info "Config copiée dans ${OPENCODE_CONFIG_FILE}"
+  curl -fsSL "${REPO_RAW}/opencode/config/opencode-global.json" -o "${OPENCODE_CONFIG_FILE}"
+  log_info "Config téléchargée dans ${OPENCODE_CONFIG_FILE}"
 }
 
 # --- Installation extension VS Code Copilot ---
