@@ -33,7 +33,10 @@ bash opencode/scripts/init-script-opencode.sh
 
 ## Ce que fait le script
 
-1. Installe OpenCode (si absent)
-2. Génère `~/.config/opencode/opencode.json` avec le provider spark (`qwen3.5:122b`), les agents et le MCP searchcode
+1. Installe [proto](https://moonrepo.dev/proto) (toolchain manager) et l'ajoute au `PATH` dans `~/.bashrc`
+2. Installe **Node.js LTS** via proto
+3. Installe **pnpm** (latest) via proto
+4. Installe OpenCode (si absent)
+5. Génère `~/.config/opencode/opencode.json` avec le provider spark (`qwen3.5:122b`), les agents et le MCP searchcode
 
 Ce fichier se fusionne avec `opencode.json` (racine du projet, basé sur [dnum-mi/starter-kit-opencode](https://github.com/dnum-mi/starter-kit-opencode)).

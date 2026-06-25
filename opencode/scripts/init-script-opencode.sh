@@ -8,6 +8,7 @@ OPENCODE_CONFIG_FILE="${OPENCODE_CONFIG_DIR}/opencode.json"
 WORK_DIR="${HOME}/work"
 REPO_RAW="https://raw.githubusercontent.com/IA-Generative/onyxia/refs/heads/feat/init-script-opencode"
 STARTER_KIT_RAW="https://raw.githubusercontent.com/dnum-mi/starter-kit-opencode/main"
+PROTO_HOME="${HOME}/.proto"
 
 # --- Couleurs ---
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
@@ -21,6 +22,55 @@ check_env() {
     log_error "Définissez-le dans les secrets Onyxia ou via export."
     exit 1
   fi
+}
+
+# --- Installation de proto (toolchain manager) ---
+install_proto() {
+  export PATH="${PROTO_HOME}/bin:${PROTO_HOME}/shims:${PATH}"
+  if command -v proto &>/dev/null; then
+    log_info "proto déjà installé : $(proto --version 2>/dev/null)"
+    return
+  fi
+
+  log_info "Installation de proto..."
+  curl -fsSL https://moonrepo.dev/install/proto.sh | bash -s -- --yes
+  export PATH="${PROTO_HOME}/bin:${PROTO_HOME}/shims:${PATH}"
+
+  if ! command -v proto &>/dev/null; then
+    log_error "Impossible de trouver proto après installation."
+    exit 1
+  fi
+
+  grep -qF 'PROTO_HOME' "${HOME}/.bashrc" 2>/dev/null \
+    || echo 'export PATH="${HOME}/.proto/bin:${HOME}/.proto/shims:${PATH}"' >> "${HOME}/.bashrc"
+
+  log_info "proto installé : $(proto --version)"
+}
+
+# --- Installation de Node.js via proto ---
+install_node() {
+  export PATH="${PROTO_HOME}/bin:${PROTO_HOME}/shims:${PATH}"
+  if command -v node &>/dev/null; then
+    log_info "Node.js déjà installé : $(node --version)"
+    return
+  fi
+
+  log_info "Installation de Node.js LTS via proto..."
+  proto install node lts
+  log_info "Node.js installé : $(node --version)"
+}
+
+# --- Installation de pnpm via proto ---
+install_pnpm() {
+  export PATH="${PROTO_HOME}/bin:${PROTO_HOME}/shims:${PATH}"
+  if command -v pnpm &>/dev/null; then
+    log_info "pnpm déjà installé : $(pnpm --version)"
+    return
+  fi
+
+  log_info "Installation de pnpm via proto..."
+  proto install pnpm latest
+  log_info "pnpm installé : $(pnpm --version)"
 }
 
 # --- Installation d'OpenCode ---
@@ -91,6 +141,9 @@ install_copilot() {
 
 # --- Main ---
 check_env
+install_proto
+install_node
+install_pnpm
 install_opencode
 install_gh
 install_global_config
