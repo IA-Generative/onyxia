@@ -58,11 +58,10 @@ install_node() {
 
   log_info "Installation de Node.js LTS via proto..."
   proto install node lts
-  # Épingler globalement pour que les autres outils proto (pnpm) trouvent node
-  NODE_VERSION=$(node --version 2>/dev/null | tr -d 'v')
-  proto pin node "${NODE_VERSION}" --to global 2>/dev/null \
-    && log_info "Node.js ${NODE_VERSION} épinglé globalement via proto"
-  log_info "Node.js installé : $(node --version)"
+  # Épingler avec la même spec pour que proto trouve node lors de l'install de pnpm
+  proto pin node lts --to global \
+    && log_info "Node.js LTS épinglé globalement via proto"
+  log_info "Node.js installé : $(proto exec node -- node --version 2>/dev/null)"
 }
 
 # --- Installation de pnpm via proto ---
@@ -75,9 +74,9 @@ install_pnpm() {
 
   log_info "Installation de pnpm via proto..."
   proto install pnpm latest
-  proto pin pnpm latest --to global 2>/dev/null \
-    && log_info "pnpm épinglé globalement via proto"
-  log_info "pnpm installé : $(pnpm --version 2>/dev/null)"
+  proto pin pnpm latest --to global \
+    && log_info "pnpm latest épinglé globalement via proto"
+  log_info "pnpm installé : $(proto exec pnpm -- pnpm --version 2>/dev/null)"
 }
 
 # --- Installation d'OpenCode ---
