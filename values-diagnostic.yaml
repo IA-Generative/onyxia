@@ -1,0 +1,32 @@
+# values-diagnostic.yaml
+# Valeurs pour déployer un pod VSCode Python avec le script de diagnostic
+
+init:
+  personalInit: https://raw.githubusercontent.com/IA-Generative/onyxia/main/init-script-diagnostic.sh
+
+# Augmenter les timeouts pour le diagnostic
+startupProbe:
+  failureThreshold: 120
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+livenessProbe:
+  failureThreshold: 30
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+persistence:
+  enabled: true
+  size: 20Gi
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 500M
+  limits:
+    cpu: 1000m
+    memory: 2000M
