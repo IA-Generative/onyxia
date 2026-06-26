@@ -31,9 +31,9 @@ echo ""
 bash "${INIT_SCRIPT}"
 echo ""
 
-echo "=== Vérifications proto / node / pnpm ==="
+echo "=== Vérifications proto / node / pnpm / opencode ==="
 
-export PATH="${HOME}/.proto/bin:${HOME}/.proto/shims:${PATH}"
+export PATH="${HOME}/.proto/bin:${HOME}/.proto/shims:${HOME}/.opencode/bin:${PATH}"
 
 command -v proto &>/dev/null \
   && pass "proto installé : $(proto --version 2>/dev/null)" \
@@ -46,6 +46,10 @@ command -v node &>/dev/null \
 command -v pnpm &>/dev/null \
   && pass "pnpm installé : $(pnpm --version)" \
   || fail "pnpm absent"
+
+command -v opencode &>/dev/null \
+  && pass "opencode installé : $(opencode --version 2>/dev/null || echo 'version inconnue')" \
+  || fail "opencode absent"
 
 echo ""
 echo "=== Vérifications config globale (~/.config/opencode/opencode.json) ==="

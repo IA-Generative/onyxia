@@ -50,13 +50,18 @@ install_proto() {
 # --- Installation de Node.js via proto ---
 install_node() {
   export PATH="${PROTO_HOME}/bin:${PROTO_HOME}/shims:${PATH}"
-  if command -v node &>/dev/null; then
-    log_info "Node.js déjà installé : $(node --version)"
+  # Vérifie si node est déjà épinglé globalement dans ~/.proto/.prototools
+  if grep -q "node" "${PROTO_HOME}/.prototools" 2>/dev/null; then
+    log_info "Node.js déjà géré par proto : $(node --version 2>/dev/null)"
     return
   fi
 
   log_info "Installation de Node.js LTS via proto..."
   proto install node lts
+  # Épingler globalement pour que les autres outils proto (pnpm) trouvent node
+  NODE_VERSION=$(node --version 2>/dev/null | tr -d 'v')
+  proto pin node "${NODE_VERSION}" --to global 2>/dev/null \
+    && log_info "Node.js ${NODE_VERSION} épinglé globalement via proto"
   log_info "Node.js installé : $(node --version)"
 }
 
@@ -70,11 +75,15 @@ install_pnpm() {
 
   log_info "Installation de pnpm via proto..."
   proto install pnpm latest
-  log_info "pnpm installé : $(pnpm --version)"
+  proto pin pnpm latest --to global 2>/dev/null \
+    && log_info "pnpm épinglé globalement via proto"
+  log_info "pnpm installé : $(pnpm --version 2>/dev/null)"
 }
 
 # --- Installation d'OpenCode ---
 install_opencode() {
+  # L'installateur opencode place le binaire dans ~/.opencode/bin
+  export PATH="${HOME}/.opencode/bin:${PATH}"
   if command -v opencode &>/dev/null; then
     log_info "OpenCode déjà installé : $(opencode --version 2>/dev/null || echo 'version inconnue')"
     return
@@ -82,6 +91,10 @@ install_opencode() {
 
   log_info "Installation d'OpenCode..."
   curl -fsSL https://opencode.ai/install | bash
+
+  # L'installateur modifie .bashrc mais pas le PATH de la session courante
+  export PATH="${HOME}/.opencode/bin:${PATH}"
+
   if ! command -v opencode &>/dev/null; then
     OPENCODE_BIN=$(find "${HOME}/.opencode" -name "opencode" -type f 2>/dev/null | head -1)
     if [ -n "${OPENCODE_BIN}" ]; then
@@ -91,6 +104,7 @@ install_opencode() {
       exit 1
     fi
   fi
+
   log_info "OpenCode installé : $(opencode --version 2>/dev/null)"
 }
 
@@ -103,6 +117,7 @@ install_global_config() {
 
 # --- Config projet : starter-kit dnum-mi → ~/work/opencode.json ---
 install_project_config() {
+  mkdir -p "${WORK_DIR}"
   curl -fsSL "${STARTER_KIT_RAW}/opencode.json" -o "${WORK_DIR}/opencode.json"
   log_info "Config projet (starter-kit) écrite dans ${WORK_DIR}/opencode.json"
 }
