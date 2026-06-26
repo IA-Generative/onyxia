@@ -61,6 +61,11 @@ install_node() {
   # Épingler avec la même spec pour que proto trouve node lors de l'install de pnpm
   proto pin node lts --to global \
     && log_info "Node.js LTS épinglé globalement via proto"
+  # Symlink dans /usr/local/bin pour accessibilité sans PATH
+  NODE_BIN=$(proto bin node 2>/dev/null)
+  [ -n "${NODE_BIN}" ] && { sudo ln -sf "${NODE_BIN}" /usr/local/bin/node 2>/dev/null || ln -sf "${NODE_BIN}" /usr/local/bin/node 2>/dev/null; }
+  NPM_BIN=$(proto bin npm 2>/dev/null)
+  [ -n "${NPM_BIN}" ] && { sudo ln -sf "${NPM_BIN}" /usr/local/bin/npm 2>/dev/null || ln -sf "${NPM_BIN}" /usr/local/bin/npm 2>/dev/null; }
   log_info "Node.js installé : $(proto exec node -- node --version 2>/dev/null)"
 }
 
@@ -76,6 +81,9 @@ install_pnpm() {
   proto install pnpm latest
   proto pin pnpm latest --to global \
     && log_info "pnpm latest épinglé globalement via proto"
+  # Symlink dans /usr/local/bin pour accessibilité sans PATH
+  PNPM_BIN=$(proto bin pnpm 2>/dev/null)
+  [ -n "${PNPM_BIN}" ] && { sudo ln -sf "${PNPM_BIN}" /usr/local/bin/pnpm 2>/dev/null || ln -sf "${PNPM_BIN}" /usr/local/bin/pnpm 2>/dev/null; }
   log_info "pnpm installé : $(proto exec pnpm -- pnpm --version 2>/dev/null)"
 }
 
@@ -94,15 +102,20 @@ install_opencode() {
   # L'installateur modifie .bashrc mais pas le PATH de la session courante
   export PATH="${HOME}/.opencode/bin:${PATH}"
 
-  if ! command -v opencode &>/dev/null; then
-    OPENCODE_BIN=$(find "${HOME}/.opencode" -name "opencode" -type f 2>/dev/null | head -1)
-    if [ -n "${OPENCODE_BIN}" ]; then
-      ln -sf "${OPENCODE_BIN}" /usr/local/bin/opencode
-    else
-      log_error "Impossible de trouver le binaire opencode après installation."
-      exit 1
-    fi
+  # Symlink dans /usr/local/bin pour que opencode soit accessible quel que soit le shell
+  OPENCODE_BIN=$(find "${HOME}/.opencode/bin" -name "opencode" -type f 2>/dev/null | head -1)
+  if [ -z "${OPENCODE_BIN}" ]; then
+    log_error "Impossible de trouver le binaire opencode après installation."
+    exit 1
   fi
+  sudo ln -sf "${OPENCODE_BIN}" /usr/local/bin/opencode \
+    || ln -sf "${OPENCODE_BIN}" /usr/local/bin/opencode
+
+  # Garantir que ~/.opencode/bin et proto sont dans le PATH des futurs terminaux
+  grep -qF '.opencode/bin' "${HOME}/.bashrc" 2>/dev/null \
+    || echo 'export PATH="${HOME}/.opencode/bin:${PATH}"' >> "${HOME}/.bashrc"
+  grep -qF '.proto/bin' "${HOME}/.bashrc" 2>/dev/null \
+    || echo 'export PATH="${HOME}/.proto/bin:${HOME}/.proto/shims:${PATH}"' >> "${HOME}/.bashrc"
 
   log_info "OpenCode installé : $(opencode --version 2>/dev/null)"
 }
